@@ -14,4 +14,15 @@ $(function(){
             marginLeft: 0,
         },100);
     });
+    
+    //slick
+    $('.carousel').slick({
+        autoplay: true,
+        dots: true,
+        infinite: true,
+        autoplaySpeed: 5000,
+        arrows: false,
+    });
+    
+    
 });
