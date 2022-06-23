@@ -31,6 +31,27 @@ $(function(){
         
         //入力チェックした結果、エラーがあるかないか確認
         let result = inputCheck();
+        
+         // エラー判定とメッセージを取得
+         let error = result.error;
+         let message = result.message;
+         
+        if (error == false) {
+             $.ajax({
+             url: 'https://api.staticforms.xyz/submit',
+             type: 'POST',
+             dataType: 'json',
+             data: $('#form').serialize(),
+             success: function (result) {
+               alert('お問い合わせを送信しました。')
+             },
+             error: function (xhr, resp, text) {
+               alert('お問い合わせを送信できませんでした。')
+             }
+           })
+         } else {
+           alert(message);
+         }
     });
     
     //フォーカスが外れたとき（blur）にフォームの入力チェックをする
@@ -118,5 +139,26 @@ $(function(){
            // エラーなし
            $('#tel').css('background-color', '#fafafa');
          }
-      }
+         
+         if ($('#agree').prop('checked') == false){
+             error = true;
+             message += '個人情報の取り扱いについてご同意いただける場合は、チェックボックスにチェックしてください。\n';
+         };
+         
+          // エラーの有無で送信ボタンを切り替え
+         if (error == true) {
+           $('#submit').attr('src', 'images/button-submit.png');
+         } else {
+           $('#submit').attr('src', 'images/button-submit-blue.png');
+         }
+         
+         result={
+             error: error,
+             message: message
+         }
+         
+         //戻り値としてエラーがあるか返す
+         return result;
+         
+      }//function
 });
